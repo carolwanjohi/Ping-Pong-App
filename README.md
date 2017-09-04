@@ -11,16 +11,6 @@
 - For numbers divisible by 5 the output is **pong**
 - For numbers divisible by 3 and 5 the output is **pingpong** 
 
-## How Ping Pong Works
-
-| Behavior        | Input           | Outcome  |
-| ------------- |:-------------:| -----:|
-| The program should count to the number provided by the user | 2 | 1, 2 |
-| The program should replace 3 and its multiples with ping | 11 | 1, 2, ping, 4, 5, ping, 7, 8, ping, 10, 11 |
-| The program should replace 5 and its multiples with pong | 13 | 1, 2, ping, 4, pong, ping, 7, 8, ping, pong, 11, ping, 13 |
-| The program should replace multiples of both 3 and 5 or 15 and its multiples with pingpong | 17 | 1, 2, ping, 4, pong, ping, 7, 8, ping, pong, 11, ping, 13, 14, pingpong, 16, 17 |
-| The program should return a message when input is a negative number | -20 | This is not a positive number |
-
 ## Known Bugs
 
 No known bugs
