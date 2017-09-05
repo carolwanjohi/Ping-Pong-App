@@ -1,0 +1,22 @@
+{
+  "name": "ping-pong",
+  "description": "\"Practising how to use npm\"",
+  "main": "index.js",
+  "authors": [
+    "Peter Maina and Carol Wanjohi"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/carolwanjohi/Ping-Pong-App",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "bootstrap": "^3.3.7",
+    "moment": "^2.18.1"
+  }
+}
