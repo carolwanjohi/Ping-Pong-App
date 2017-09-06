@@ -20,16 +20,19 @@ $(document).ready(function () {
     });
 });
 
-$(document).ready(function() {
-  $('#time').text(moment());
+var displayTime = require('./../js/time.js').displayTimeModule;
 
+$(document).ready(function() {
+        displayTime();
 });
+
+
 
 var Weather = require('./../js/weather.js').weatherModule;
 
 var displayHumidity = function(city, humidityData) {
   $('.showWeather').text("The humidity in " + city + " is " + humidityData + "%");
-}
+};
 
 $(document).ready(function() {
   var currentWeatherObject = new Weather();

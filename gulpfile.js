@@ -7,6 +7,7 @@ var utilities = require('gulp-util');
 var del = require('del');
 var jshint = require('gulp-jshint');
 var buildProduction = utilities.env.production;
+
 var lib = require('bower-files')({
   "overrides": {
     "bootstrap": {
@@ -18,11 +19,21 @@ var lib = require('bower-files')({
     }
   }
 });
+
 var browserSync = require('browser-sync').create();
+var sass = require('gulp-sass');
+var sourcemaps = require('gulp-sourcemaps');
 
 // Test gulp task in the terminal
 gulp.task('myTask', function() {
   console.log("Hello Gulp");
+});
+
+// Task for jshint
+gulp.task('jshint', function() {
+  return gulp.src(['js/*.js'])
+    .pipe(jshint())
+    .pipe(jshint.reporter('default'));
 });
 
 // Task for concat
@@ -48,28 +59,28 @@ gulp.task('minifyScripts', ['jsBrowserify'], function() {
     .pipe(uglify())
     .pipe(gulp.dest('./build/js'));
 });
-// Task for bower_components
-gulp.task('bowerJS', function() {
+
+// Task for js bower_components
+gulp.task('jsBower', function() {
   return gulp.src(lib.ext('js').files)
     .pipe(concat('vendor.min.js'))
     .pipe(uglify())
     .pipe(gulp.dest('./build/js'));
 });
 
-// Task for css
-gulp.task('bowerCSS', function() {
+// Task for css bower_components
+gulp.task('cssBower', function() {
   return gulp.src(lib.ext('css').files)
     .pipe(concat('vendor.css'))
     .pipe(gulp.dest('./build/css'));
 });
 
-// Combine bower tasks
-
-gulp.task('bower', ['bowerJS', 'bowerCSS']);
+// Task bower to carry out task jsBower and cssBower
+gulp.task('bower', ['jsBower', 'cssBower']);
 
 // Task for cleaning
 gulp.task('clean', function() {
-  return del(['build', 'temp']);
+  return del(['build', 'tmp']);
 });
 
 // Task for creating environments
@@ -80,6 +91,7 @@ gulp.task('build', ['clean'], function() {
     gulp.start('jsBrowserify');
   }
   gulp.start('bower');
+  gulp.start('cssBuild');
 });
 
 // Task for server
@@ -94,6 +106,7 @@ gulp.task('server', ['build'], function() {
   gulp.watch(['js/*.js'], ['jsBuild']);
   gulp.watch(['bower.json'], ['bowerBuild']);
   gulp.watch(['*.html'], ['htmlBuild']);
+  gulp.watch(['scss/*.scss'], ['cssBuild']);
 });
 
 gulp.task('jsBuild', ['jsBrowserify', 'jshint'], function() {
@@ -108,9 +121,12 @@ gulp.task('htmlBuild', function() {
   browserSync.reload();
 });
 
-// Task for code checker
-gulp.task('jshint', function() {
-  return gulp.src(['js/*.js'])
-    .pipe(jshint())
-    .pipe(jshint.reporter('default'));
+// Task for sass. Converts sass to css
+gulp.task('cssBuild', function() {
+  return gulp.src(['scss/*.scss'])
+    .pipe(sourcemaps.init())
+    .pipe(sass())
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('./build/css'))
+    .pipe(browserSync.stream());
 });
